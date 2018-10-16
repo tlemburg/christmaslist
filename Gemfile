@@ -1,0 +1,10 @@
+ruby '2.4.4'
+source 'https://rubygems.org'
+
+gem 'bcrypt'
+gem 'mysql2'
+gem 'sinatra'
+gem 'activerecord', require: 'active_record'
+gem 'thin'
+gem 'shotgun'
+gem 'rake'
