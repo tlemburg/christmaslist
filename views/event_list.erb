@@ -1,0 +1,7 @@
+<h1><%= @list_user.name %>'s List for Lemburg Christmas 2018</h1>
+
+<ul>
+  <% @list_user.wanted_gifts.each do |gift| %>
+  <li><%= gift.name %></li>
+  <% end %>
+</ul>

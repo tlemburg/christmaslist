@@ -1,0 +1,24 @@
+<h1>Lemburg Christmas 2018</h1>
+
+<h4>My List:</h4>
+<ul>
+  <% @user.wanted_gifts.each do |gift| %>
+  <li><%= gift.name %></li>
+  <% end %>
+</ul>
+
+<a class="btn btn-primary" href="/events/lemburgchristmas2018/add/">Add to My List</a>
+
+<h4>Gifts I've purchased so far:</h4>
+<ul>
+  <% @user.gifted_gifts.each do |gift| %>
+  <li><%= gift.name %> for <%= gift.wanter.name %></li>
+  <% end %>
+</ul>
+
+<h4>Other members lists:</h4>
+<ul>
+  <% (User.all - [@user]).each do |user| %>
+    <li><a href="/events/lemburgchristmas2018/list/<%= user.id %>/"><%= user.name %></a></li>
+  <% end %>
+</ul>
