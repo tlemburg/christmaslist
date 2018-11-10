@@ -1,0 +1,35 @@
+<h1>Gift For <%= @list_user.name %>'s List for Lemburg Christmas 2018</h1>
+
+<h3><%= @gift.name %></h3>
+
+<% if @gift.image_url && !@gift.image_url.empty? %>
+<img style="max-width: 50%; max-height: 500px; margin-bottom: 1em;" src="<%= @gift.image_url %>" />
+<% end %>
+
+<p><%= @gift.description %></p>
+
+<% if @gift.link && !@gift.link.empty? %>
+  <a href="<%= @gift.link %>"><%= @gift.link %></a>
+<% end %>
+<br>
+<% if @gift.wanter_id == @user.id %>
+  <br>
+  <a class="btn btn-primary" role="button" href="<%= @gift.site_link %>edit">Edit</a>
+  <br>
+  <br>
+  <form id="delete-form" method="POST" action="<%= @gift.site_link %>delete">
+    <button id="delete" class="btn btn-danger" type="submit">Delete</button>
+  </form>
+<% elsif @gift.gifter_id.nil? %>
+<form method="POST">
+  <button type="submit" class="btn btn-primary">I'll Buy This!</button>
+</form>
+<% elsif @gift.gifter_id == @user.id %>
+<h5>I'm currently buying this</h5>
+<form method="POST">
+  <input type="hidden" name="cancel" value="cancel" />
+  <button type="submit" class="btn btn-danger">I've changed my mind</button>
+</form>
+<% else %>
+<h5>Someone else is buying this.</h5>
+<% end %>

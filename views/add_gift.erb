@@ -1,19 +1,21 @@
+<h1><%= @gift.id.nil? ? "Add a Gift " : "Edit #{@gift.name} " %>for Lemburg Christmas 2018</h1>
+
 <form method="POST">
   <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+    <label for="name">Gift Name</label>
+    <input type="text" class="form-control" id="name" name="name" placeholder="Gift Name" value="<%= @gift.name %>">
   </div>
   <div class="form-group">
-    <label for="description">Description</label>
-    <textarea class="form-control" id="description" name="description" placeholder="Description"></textarea>
+    <label for="description">Gift Description</label>
+    <textarea class="form-control" id="description" name="description" placeholder="Gift Description"><%= @gift.description %></textarea>
   </div>
   <div class="form-group">
-    <label for="link">Link</label>
-    <input type="text" class="form-control" id="link" name="link" placeholder="Link">
+    <label for="link">Web URL (optional)</label>
+    <input type="text" class="form-control" id="link" name="link" placeholder="http://amazon.com/..." value="<%= @gift.link %>">
   </div>
   <div class="form-group">
-    <label for="image-url">Image URL</label>
-    <input type="text" class="form-control" id="image-url" name="image_url" placeholder="Image URL">
+    <label for="image-url">Image URL (optional)</label>
+    <input type="text" class="form-control" id="image-url" name="image_url" placeholder="http://images.google.com/..." value="<%= @gift.image_url %>">
   </div>
 
   <button type="submit" class="btn btn-primary">Submit</button>

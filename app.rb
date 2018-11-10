@@ -24,14 +24,15 @@ end
 
 before do
   session[:init] = true
+  session[:flash_messages] ||= []
 
   if session.has_key?(:user_id)
-    @user ||= (User.find(session[:user_id]) rescue nil)
+    @user = (User.find(session[:user_id]) rescue nil)
   end
 end
 
 get '/' do
-  'christmaslist'
+  redirect '/login/'
 end
 
 Dir.glob("./routes/*.rb").each {|route| require route}

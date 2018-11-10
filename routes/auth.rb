@@ -8,7 +8,7 @@ helpers do
   end
 
   def bad_login
-    flash :error, 'Incorrect username/password combination.'
+    flash :danger, 'Incorrect username/password combination.'
     redirect '/login/'
   end
 
@@ -19,7 +19,11 @@ helpers do
 end
 
 get '/login/?' do
-  erb :login, :layout => :layout
+  if @user.nil?
+    erb :login, :layout => :layout
+  else
+    redirect '/events/lemburgchristmas2018/'
+  end
 end
 
 post '/login/?' do
@@ -27,7 +31,7 @@ post '/login/?' do
   bad_login if user.nil?
   bad_login unless user.check_password(params[:password])
   session[:user_id] = user.id
-  redirect '/home/'
+  redirect '/events/lemburgchristmas2018/'
 end
 
 get '/logout/?' do
