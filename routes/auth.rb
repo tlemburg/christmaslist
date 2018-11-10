@@ -34,6 +34,26 @@ post '/login/?' do
   redirect '/events/lemburgchristmas2018/'
 end
 
+get '/change_password/?' do
+  require_login
+  erb :change_password, :layout => :layout
+end
+
+post '/change_password/?' do
+  require_login
+
+  if params[:password].empty?
+    flash :danger, 'Password must be at least 1 character'
+    redirect '/change_password/'
+  end
+
+  @user.password = params[:password]
+  @user.save
+
+  flash :success, 'Password changed!'
+  redirect '/events/lemburgchristmas2018/'
+end
+
 get '/logout/?' do
   logout
 end
