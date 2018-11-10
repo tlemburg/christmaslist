@@ -2,6 +2,6 @@
 
 <ul>
   <% @list_user.wanted_gifts.each do |gift| %>
-    <li><a class="<%= 'purchased' if gift.purchased? %>" href="<%= gift.site_link %>"><%= gift.name %></a><%= '(purchased)' if gift.purchased? %></li>
+    <li><a class="<%= 'purchased' if gift.purchased? %>" href="<%= gift.site_link %>"><%= gift.name %></a><%= ' (purchased)' if gift.purchased? %></li>
   <% end %>
 </ul>
