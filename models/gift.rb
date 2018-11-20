@@ -11,4 +11,10 @@ class Gift < ActiveRecord::Base
   def purchased?
     !gifter_id.nil?
   end
+
+  def name
+    return self[:name] if id.nil?
+    return "An unnamed gift" if self[:name].nil? || self[:name].empty?
+    self[:name]
+  end
 end
