@@ -1,5 +1,5 @@
 require 'active_record'
-require 'models/user'
+require 'models/event'
 
 class AddEventsTable < ActiveRecord::Migration[5.0]
   def change
