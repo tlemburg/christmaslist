@@ -1,20 +1,20 @@
-<h1>Lemburg Christmas 2018</h1>
+<h1><%= @event.name %></h1>
 
 <div style="width:30%;display:inline-block;vertical-align:top;">
   <h4>My List:</h4>
   <ul>
-    <% @user.wanted_gifts.each do |gift| %>
+    <% @user.wanted_gifts_for_event(@event.id).each do |gift| %>
       <li><a href="<%= gift.site_link %>"><%= gift.name %></a></li>
     <% end %>
   </ul>
 
-  <a class="btn btn-primary" href="/events/lemburgchristmas2018/add/">Add to My List</a>
+  <a class="btn btn-primary" href="/events/<%= @event.slug %>/add/">Add to My List</a>
 </div>
 
 <div style="width:30%;display:inline-block;vertical-align:top;">
 <h4>Gifts I've purchased so far:</h4>
   <ul>
-    <% @user.gifted_gifts.each do |gift| %>
+    <% @user.gifted_gifts_for_event(@event.id).each do |gift| %>
       <li><a href="<%= gift.site_link %>"><%= gift.name %></a> for <%= gift.wanter.name %></li>
     <% end %>
   </ul>
@@ -24,7 +24,7 @@
   <h4>Other members lists:</h4>
   <ul>
     <% (User.all - [@user]).each do |user| %>
-      <li><a href="/events/lemburgchristmas2018/list/<%= user.id %>/"><%= user.name %></a></li>
+      <li><a href="/events/<%= @event.slug %>/list/<%= user.id %>/"><%= user.name %></a></li>
     <% end %>
   </ul>
 </div>

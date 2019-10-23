@@ -7,6 +7,14 @@ class User < ActiveRecord::Base
   has_many :gifted_gifts, foreign_key: "gifter_id", class_name: "Gift"
   include BCrypt
 
+  def wanted_gifts_for_event(event_id)
+    wanted_gifts.all.select{|gift| gift.event_id == event_id}
+  end
+
+  def gifted_gifts_for_event(event_id)
+    gifted_gifts.all.select{|gift| gift.event_id == event_id}
+  end
+
   def password
     @password ||= Password.new(password_hash)
   end

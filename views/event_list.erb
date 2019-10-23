@@ -1,7 +1,7 @@
-<h1><%= @list_user.name %>'s List for Lemburg Christmas 2018</h1>
+<h1><%= @list_user.name %>'s List for <%= @event.name %></h1>
 
 <ul>
-  <% @list_user.wanted_gifts.each do |gift| %>
+  <% @list_user.wanted_gifts_for_event(@event.id).each do |gift| %>
     <li><a class="<%= 'purchased' if gift.purchased? %>" href="<%= gift.site_link %>"><%= gift.name %></a><%= ' (purchased)' if gift.purchased? %></li>
   <% end %>
 </ul>

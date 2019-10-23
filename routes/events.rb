@@ -1,7 +1,13 @@
 require 'sinatra'
+require 'models/event'
 require 'models/gift'
 
 helpers do
+  def load_event(slug)
+    @event = Event.find_by(:slug => slug)
+    not_found if @event.nil?
+  end
+
   def load_list_user(id)
     # check user exists
     @list_user = User.find_by(:id => id)
@@ -16,50 +22,57 @@ helpers do
   end
 end
 
-get '/events/lemburgchristmas2018/?' do
+get '/events/:event_slug/?' do
   require_login
+  load_event(params[:event_slug])
   erb :event_home, :layout => :layout
 end
 
-get '/events/lemburgchristmas2018/add/?' do
+get '/events/:event_slug/add/?' do
   require_login
+  load_event(params[:event_slug])
   @gift = Gift.new
   erb :add_gift, :layout => :layout
 end
 
-post '/events/lemburgchristmas2018/add/?' do
+post '/events/:event_slug/add/?' do
   require_login
+  load_event(params[:event_slug])
   new_gift = @user.wanted_gifts.create(
            name: params[:name],
            description: params[:description],
            link: params[:link],
-           image_url: params[:image_url]
+           image_url: params[:image_url],
+           event_id: @event.id
   )
 
   flash :success, "Gift #{new_gift.name} was added to your list."
-  redirect '/events/lemburgchristmas2018/'
+  redirect "/events/#{params[:event_slug]}/"
 end
 
-get '/events/lemburgchristmas2018/list/:user_id/?' do
+get '/events/:event_slug/list/:user_id/?' do
   require_login
+  load_event(params[:event_slug])
   load_list_user(params[:user_id])
-  redirect '/events/lemburgchristmas2018/' if @user == @list_user
+  redirect "/events/#{params[:event_slug]}/" if @user == @list_user
 
   erb :event_list, :layout => :layout
 end
 
-get '/events/lemburgchristmas2018/list/:user_id/gift/:gift_id/?' do
+get '/events/:event_slug/list/:user_id/gift/:gift_id/?' do
   require_login
+  load_event(params[:event_slug])
   load_list_user(params[:user_id])
   load_gift(params[:gift_id])
 
   erb :gift_detail, :layout => :layout
 end
 
-post '/events/lemburgchristmas2018/list/:user_id/gift/:gift_id/?' do
+post '/events/:event_slug/list/:user_id/gift/:gift_id/?' do
   require_login
+  load_event(params[:event_slug])
   load_list_user(params[:user_id])
-  redirect '/events/lemburgchristmas2018/' if @user == @list_user
+  redirect "/events/#{params[:event_slug]}/" if @user == @list_user
 
   load_gift(params[:gift_id])
 
@@ -72,19 +85,21 @@ post '/events/lemburgchristmas2018/list/:user_id/gift/:gift_id/?' do
     @gift.save
     flash :success, "Saved! You're marked as buying #{@gift.name} for #{@list_user.name}."
   end
-  redirect "/events/lemburgchristmas2018/list/#{params[:user_id]}/"
+  redirect "/events/#{params[:event_slug]}/list/#{params[:user_id]}/"
 end
 
-get '/events/lemburgchristmas2018/list/:user_id/gift/:gift_id/edit/?' do
+get '/events/:event_slug/list/:user_id/gift/:gift_id/edit/?' do
   require_login
+  load_event(params[:event_slug])
   load_list_user(params[:user_id])
   load_gift(params[:gift_id])
 
   erb :add_gift, :layout => :layout
 end
 
-post '/events/lemburgchristmas2018/list/:user_id/gift/:gift_id/edit/?' do
+post '/events/:event_slug/list/:user_id/gift/:gift_id/edit/?' do
   require_login
+  load_event(params[:event_slug])
   load_list_user(params[:user_id])
   load_gift(params[:gift_id])
 
@@ -94,11 +109,12 @@ post '/events/lemburgchristmas2018/list/:user_id/gift/:gift_id/edit/?' do
                 image_url: params[:image_url]
   )
   flash :success, "Your gift #{@gift.name} has been updated!"
-  redirect '/events/lemburgchristmas2018/'
+  redirect "/events/#{params[:event_slug]}/"
 end
 
-post '/events/lemburgchristmas2018/list/:user_id/gift/:gift_id/delete/?' do
+post '/events/:event_slug/list/:user_id/gift/:gift_id/delete/?' do
   require_login
+  load_event(params[:event_slug])
   load_list_user(params[:user_id])
   load_gift(params[:gift_id])
 
@@ -106,5 +122,5 @@ post '/events/lemburgchristmas2018/list/:user_id/gift/:gift_id/delete/?' do
     @gift.delete
   end
   flash :success, "Your gift #{@gift.name} has been deleted!"
-  redirect '/events/lemburgchristmas2018/'
+  redirect "/events/#{params[:event_slug]}/"
 end

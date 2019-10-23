@@ -35,4 +35,6 @@ get '/' do
   redirect '/login/'
 end
 
+DEFAULT_EVENT = 'lemburgchristmas2019'
+
 Dir.glob("./routes/*.rb").each {|route| require route}

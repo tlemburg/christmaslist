@@ -22,7 +22,7 @@ get '/login/?' do
   if @user.nil?
     erb :login, :layout => :layout
   else
-    redirect '/events/lemburgchristmas2018/'
+    redirect "/events/#{DEFAULT_EVENT}/"
   end
 end
 
@@ -31,7 +31,7 @@ post '/login/?' do
   bad_login if user.nil?
   bad_login unless user.check_password(params[:password])
   session[:user_id] = user.id
-  redirect '/events/lemburgchristmas2018/'
+  redirect "/events/#{DEFAULT_EVENT}/"
 end
 
 get '/change_password/?' do
@@ -51,7 +51,7 @@ post '/change_password/?' do
   @user.save
 
   flash :success, 'Password changed!'
-  redirect '/events/lemburgchristmas2018/'
+  redirect "/events/#{DEFAULT_EVENT}/"
 end
 
 get '/logout/?' do
