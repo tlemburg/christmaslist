@@ -12,16 +12,21 @@
 </div>
 
 <div style="width:30%;display:inline-block;vertical-align:top;">
-<h4>Gifts I've purchased so far:</h4>
-  <ul>
+<h4>Shopping List:</h4>
+  <ul class="checklist">
     <% @user.gifted_gifts_for_event(@event.id).each do |gift| %>
-      <li><a href="<%= gift.site_link %>"><%= gift.name %></a> for <%= gift.wanter.name %></li>
+      <li>
+        <input class="gift-purchased" type="checkbox" data-wanter-id="<%= gift.wanter_id %>" data-gift-id="<%= gift.id %>" <%= 'checked="checked"' if gift.purchased %> />
+        <span style="padding-left: 5px;">
+          <a href="<%= gift.site_link %>"><%= gift.name %></a> for <%= gift.wanter.name %>
+        </span>
+      </li>
     <% end %>
   </ul>
 </div>
 
 <div style="width:30%;display:inline-block;vertical-align:top;">
-  <h4>Other members lists:</h4>
+  <h4>Other members' lists:</h4>
   <ul>
     <% (User.all - [@user]).each do |user| %>
       <li><a href="/events/<%= @event.slug %>/list/<%= user.id %>/"><%= user.name %></a></li>

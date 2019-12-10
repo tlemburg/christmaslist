@@ -68,6 +68,24 @@ get '/events/:event_slug/list/:user_id/gift/:gift_id/?' do
   erb :gift_detail, :layout => :layout
 end
 
+post '/events/:event_slug/list/:user_id/gift/:gift_id/purchased/?' do
+  require_login
+  load_event(params[:event_slug])
+  load_list_user(params[:user_id])
+  load_gift(params[:gift_id])
+
+  if params[:mark_purchased] == 'mark_purchased'
+    @gift.purchased = true
+    @gift.save
+    message = "Gift marked!"
+  elsif params[:mark_purchased] == 'unmark_purchased'
+    @gift.purchased = false
+    @gift.save
+    message = "Gift unmarked."
+  end
+  return {success: message}.to_json
+end
+
 post '/events/:event_slug/list/:user_id/gift/:gift_id/?' do
   require_login
   load_event(params[:event_slug])
@@ -78,12 +96,19 @@ post '/events/:event_slug/list/:user_id/gift/:gift_id/?' do
 
   if params[:cancel] == 'cancel' && @user.id == @gift.gifter_id
     @gift.gifter = nil
+    @gift.purchased = false
     @gift.save
-    flash :success, "Saved! You're no longer buying #{@gift.name} for #{@list_user.name}."
-  else
+    flash :success, "Saved! You're no longer marked down to buy #{@gift.name} for #{@list_user.name}."
+  elsif params[:mark] == 'mark'
     @gift.gifter = @user
     @gift.save
     flash :success, "Saved! You're marked as buying #{@gift.name} for #{@list_user.name}."
+  elsif params[:mark_purchased] == 'mark_purchased'
+    @gift.purchased = true
+    @gift.save
+  elsif params[:mark_purchased] == 'unmark_purchased'
+    @gift.purchased = false
+    @gift.save
   end
   redirect "/events/#{params[:event_slug]}/list/#{params[:user_id]}/"
 end

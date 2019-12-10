@@ -22,6 +22,7 @@
   </form>
 <% elsif @gift.gifter_id.nil? %>
 <form method="POST">
+  <input type="hidden" name="mark" value="mark" />
   <button type="submit" class="btn btn-primary">I'll Buy This!</button>
 </form>
 <% elsif @gift.gifter_id == @user.id %>
